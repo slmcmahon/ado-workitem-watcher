@@ -54,7 +54,7 @@ def receive_messages_continuously():
                     event = WorkItemEvent(msg_content)
                     try:
                         if event.id > 0:
-                            wi = adoctx.get_work_item(id)
+                            wi = adoctx.get_work_item(event.id)
                             dd_required = wi.dd_required
                             
                             if dd_required:
