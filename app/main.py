@@ -1,9 +1,10 @@
 from adowork import ado_context
+from adowork.work_item_event import WorkItemEvent
 from azure.servicebus import ServiceBusClient
 import time
 import json
 import os
-
+import uuid 
 
 def handle_workitem_created(msg_content):
     work_item_type = msg_content['resource']['fields']['System.WorkItemType']
@@ -45,18 +46,14 @@ def receive_messages_continuously():
             while True:  # Infinite loop to keep the application running
                 messages = receiver.receive_messages(max_message_count=10, max_wait_time=5)
                 for msg in messages:
-                    #print("Received message:", msg)
                     print('-'*40)
 
                     body = b''.join(msg.body).decode('utf-8')
                     msg_content = json.loads(body)
                     
-                    event_type = msg_content['eventType'] 
-                    
+                    event = WorkItemEvent(msg_content)
                     try:
-                        handler = event_handlers.get(event_type, handle_unknown_event)
-                        id = handler(msg_content)
-                        if id > 0:
+                        if event.id > 0:
                             wi = adoctx.get_work_item(id)
                             dd_required = wi.dd_required
                             
