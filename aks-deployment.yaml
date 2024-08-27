@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ado-workitem-watcher-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ado-workitem-watcher
+  template:
+    metadata:
+      labels:
+        app: ado-workitem-watcher
+    spec:
+      containers:
+      - name: ado-workitem-watcher
+        image: slmcmahon/ado-pbi-watcher:latest
+        env:
+        - name: ADO_PAT
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: ado-pat
+        - name: ADO_ORG
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: ado-org
+        - name: ADO_PROJECT
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: ado-project
+        - name: ASB_CONNECTION_STRING
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: asb-connection-string
+        - name: ASB_QUEUE
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: asb-queue
+        - name: ASB_POLL_INTERVAL_SECONDS
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: asb-poll-interval-seconds
