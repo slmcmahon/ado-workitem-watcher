@@ -1,6 +1,7 @@
 import json
 import requests
 import re
+import os
 from requests.auth import HTTPBasicAuth
 from adowork.work_item import WorkItem
 
@@ -76,10 +77,17 @@ class AdoContext:
         ]
         
         backlink_url = f"{self._get_base_url()}wit/workItems/{work_item.id}?api-version=7.1-preview.3"
-        requests.patch(backlink_url, headers=headers, auth=self._get_credentials(), data=json.dumps(backlink))
+        task_response = requests.patch(backlink_url, headers=headers, auth=self._get_credentials(), data=json.dumps(backlink))
+        task_data = task_response.json()
+        return task_data['id']
         
     def create_wiki_page(self, work_item):
-        page_content = f"#{work_item.id}"
+        template = self._load_wi_template()
+        data = {
+            'workItemId': work_item.id,
+            'workItemTitle': work_item.title,
+        }
+        page_content = template.format(**data)
         paths = self._get_wiki_doc_paths(work_item)
         wiki_page_path = ""
         for i, path in enumerate(paths):
@@ -87,6 +95,10 @@ class AdoContext:
             wiki_page_path = self._create_wiki_path(path, content)
             
         return wiki_page_path
+
+    def _load_wi_template(self):
+        with open(os.environ["WI_TEMPLATE_PATH"], 'r') as f:
+            return f.read()
     
     def _create_wiki_path(self, path, contents=""):
         data = {
