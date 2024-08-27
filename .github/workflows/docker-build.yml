@@ -30,7 +30,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: yourusername/ado-workitem-watcher:latest
+        tags: slmcmahon/ado-workitem-watcher:latest
 
     - name: Image digest
       run: echo ${{ steps.build-and-push.outputs.digest }}
