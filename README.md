@@ -1,4 +1,7 @@
-For vscode, add the following launch.json to your .vscode folder:
+About
+-
+
+This is a work in progress.  For vscode, add the following launch.json to your .vscode folder:
 
 ```json
 {
@@ -22,3 +25,7 @@ For vscode, add the following launch.json to your .vscode folder:
     ]
 }
 ```
+
+TODO
+-
+lots of error handling
