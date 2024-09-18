@@ -11,9 +11,9 @@
 * Outline the boundaries of the design. What will be covered in this document, and what will not be included?
 
 ## Requirements
-###Functional Requirements
+### Functional Requirements
 * Detail the functional requirements that the design must meet. These are specific features or behaviors that the system should exhibit.
-###Non-Functional Requirements
+### Non-Functional Requirements
 * Include performance metrics, scalability needs, security requirements, etc.
 
 ## Design Overview
@@ -24,7 +24,7 @@
 * Describe how data will move through the system. Use data flow diagrams or sequence diagrams to illustrate these processes.
 
 ## Detailed Design
-###Component Design
+### Component Design
 * Break down each major component of the system, explaining its functionality and how it fits into the overall architecture.
 * Include class diagrams, database schemas, or API specifications as needed.
 ### User Interface Design
