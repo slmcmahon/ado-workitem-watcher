@@ -135,6 +135,7 @@ class AdoContext:
                      .replace('|', '-'))
     
     def _get_wiki_doc_paths(self, work_item):
+        # TODO: Read this value from a variable.
         paths = ["Technical Design Discussion"]
         area_path = work_item.area_path
         iteration_path = work_item.iteration_path
@@ -147,6 +148,7 @@ class AdoContext:
         
         # Add area path to the paths
         last = paths[-1]
+        # TODO: This is specific to my case.  It is harmless for others, but I need to make this more flexible.
         area_leaf = re.sub(r"^EAR-AA-\d+-", "", area_path.split('\\')[-1])
         paths.append(f"{last}/{area_leaf}")
         
