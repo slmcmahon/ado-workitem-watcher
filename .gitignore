@@ -155,4 +155,5 @@ dmypy.json
 cython_debug/
 
 .vscode/
-aks-configmap.yaml
+slb-aks-configmap.yaml
+slmcmahon-aks-configmap.yaml

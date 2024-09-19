@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ado-workitem-watcher
-        image: slmcmahon/ado-pbi-watcher:latest
+        image: slmcmahon/ado-workitem-watcher:latest
         env:
         - name: ADO_PAT
           valueFrom:
@@ -46,3 +46,15 @@ spec:
             configMapKeyRef:
               name: ado-workitem-watcher-config
               key: asb-poll-interval-seconds
+        - name: WI_TEMPLATE_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: ado-workitem-watcher-config
+              key: wi-template-path
+        resources:
+          limits:
+            cpu: 900m
+            memory: 240Mi
+          requests:
+            cpu: 300m
+            memory: 80Mi

@@ -1,5 +1,6 @@
 import json
 import requests
+import logging as log
 import re
 import os
 from requests.auth import HTTPBasicAuth
@@ -14,8 +15,8 @@ class AdoContext:
     def get_work_item(self, id):
         url = f"{self._get_base_url()}wit/workItems/{id}?api-version=7.1-preview.3"
         headers = {"Content-Type": "application/json"}
-        response = requests.get(url, headers=headers, auth=self._get_credentials())
-        return WorkItem(response.json())
+        result = self._make_request("GET", url, headers)
+        return WorkItem(result)
     
     def add_design_doc_task(self, work_item, wiki_page_path):
         task_data = [
@@ -59,8 +60,12 @@ class AdoContext:
         
         task_url = f"{self._get_base_url()}wit/workItems/$Task?api-version=7.1-preview.3"
         headers = {"Content-Type": "application/json-patch+json"}
-        response = requests.post(task_url, headers=headers, auth=self._get_credentials(), data=json.dumps(task_data))
-        response_data = response.json()
+        response_data = {}
+        try:
+            response_data = self._make_request("POST", task_url, headers, json.dumps(task_data))
+        except Exception as e:
+            log.error(f"Failed to create task: {e}")
+            return 0
 
         backlink = [
             {
@@ -77,9 +82,12 @@ class AdoContext:
         ]
         
         backlink_url = f"{self._get_base_url()}wit/workItems/{work_item.id}?api-version=7.1-preview.3"
-        task_response = requests.patch(backlink_url, headers=headers, auth=self._get_credentials(), data=json.dumps(backlink))
-        task_data = task_response.json()
-        return task_data['id']
+        try:
+            task_data = self._make_request("PATCH", backlink_url, headers, json.dumps(backlink))
+            return task_data['id']
+        except Exception as e:
+            log.error(f"Failed to create backlink: {e}")
+            return 0
         
     def create_wiki_page(self, work_item):
         template = self._load_wi_template()
@@ -108,14 +116,12 @@ class AdoContext:
         sanitized_path = path.replace(' ', '%20')
         url = f"{self._get_base_url()}/wiki/wikis/{self.project}.wiki/pages?api-version=7.1-preview.1&path={sanitized_path}"
         headers = {"Content-Type": "application/json"}
-        response = requests.put(url, headers=headers, auth=self._get_credentials(), data=json.dumps(data))
         
-        if response.status_code >= 200 and response.status_code < 300:
-            return response.json()['remoteUrl']
-        else:
+        try:
+            response = self._make_request("PUT", url, headers, json.dumps(data))
+            return response['remoteUrl']
+        except Exception as e:
             return ""
-            
-        
     
     def _get_base_url(self):
         return f"https://dev.azure.com/{self.org}/{self.project}/_apis/"
@@ -155,3 +161,26 @@ class AdoContext:
         paths.append(f"{paths[-1]}/{work_item.id} - {sanitized_title}")
         
         return paths
+
+    def _make_request(self, method, url, headers=None, data=None):
+        try:
+            response = requests.request(method, url, headers=headers, auth=self._get_credentials(), data=data)
+            
+            # Handle HTTP errors
+            if response.status_code >= 200 and response.status_code < 300:
+                return response.json()  # Return the JSON response directly
+            elif response.status_code == 401:
+                log.error("Unauthorized: Check your credentials.")
+            elif response.status_code == 403:
+                log.error("Forbidden: You do not have permission to access this resource.")
+            elif response.status_code == 404:
+                log.error(f"Not Found: The URL {url} could not be found.")
+            else:
+                log.error(f"Failed to perform request. Status Code: {response.status_code}, Response: {response.text}")
+            
+        except requests.exceptions.RequestException as e:
+            log.error(f"Request failed: {e}")
+        except json.JSONDecodeError:
+            log.error(f"Failed to decode JSON response. Response: {response.text}")
+        except Exception as e:
+            log.error(f"An unexpected error occurred: {e}")

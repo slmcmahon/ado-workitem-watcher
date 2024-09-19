@@ -36,7 +36,8 @@ def receive_messages_continuously():
                                 if url != '':
                                     print(f'Wiki page created: {url}')
                                     task_id = adoctx.add_design_doc_task(wi, url)
-                                    print(f'Design doc task created: {task_id}')
+                                    if task_id > 0:
+                                        print(f'Design doc task created: {task_id}')
                         else:
                             print("Event was either not a PBI or not tagged as dd-required.")
 
