@@ -156,3 +156,4 @@ cython_debug/
 
 .vscode/
 aks-configmap.yaml
+.DS_Store
