@@ -56,7 +56,7 @@ For vscode, add the following launch.json to your .vscode folder and provide val
 
 ## Deployment
 
-In my case, I have deployed this application on Azure Kubernetes Service, so I have included the [Dockerfile](./Dockerfile) and an AKS Deployment manifest ([aks-deployment.yaml](./aks-deployment.yaml)). This manifest implies the existence of a config map named. ado-work-item-watcher-config. You can create that with kubectl, or you can use this template to create a yaml file for it.
+In my case, I have deployed this application on Azure Kubernetes Service, so I have included the [Dockerfile](./Dockerfile) and an AKS Deployment manifest ([aks-deployment.yaml](./aks-deployment.yaml)). This manifest implies the existence of a config map named `ado-work-item-watcher-config`. You can create that with kubectl, or you can use this template to create a yaml file for it.
 
 ```yaml
 apiVersion: v1
