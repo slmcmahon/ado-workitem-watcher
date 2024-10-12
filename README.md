@@ -2,7 +2,7 @@
 
 Watches for Azure DevOps Product Backlog Items that have been created or updated with a tag named "dd-required", which indicates that a Design Document is required for the work item. If the tag exists, then it will perform the following steps:
 
-1. Create a new Wiki Page under a root folder named "Technical Design Documents" based on a template with a link back to the PBI
+1. Create a new Wiki Page under a root folder named "Technical Design Documents" based on a [template](./app/templates/design-document.md) with a link back to the PBI.
 2. Create a task under the PBI called "Complete the Design Document" with a link to the design document.
 3. Create the parent/child relationship between the Task and the Work Item.
 
