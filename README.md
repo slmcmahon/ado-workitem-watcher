@@ -39,7 +39,7 @@ For vscode, add the following launch.json to your .vscode folder and provide val
       "name": "Debug ADO WorkItem Watcher",
       "type": "debugpy",
       "request": "launch",
-      "program": "${file}",
+      "program": "${workspaceFolder}/app/main.py",
       "console": "integratedTerminal",
       "env": {
         "ASB_CONNECTION_STRING": "",
