@@ -8,7 +8,7 @@ Watches for Azure DevOps Product Backlog Items that have been created or updated
 
 ## Inspiration
 
-I am the architect for three teams of developers. I tried numerous ways to get the teams to create documentation describing how they intend to implement the designs for the PBIs that they pick up for the sprint. After many frustrating design calls for which nobody came prepared, it occurred to me that the problem was that there was no effort allocated to the task and they were more concerned with satisfying the delivery requirements than the documentation. So my solution was to add something to which they could allocate some effort / capacity for.
+I am the architect for three teams of developers. I tried numerous ways to get the teams to create documentation describing how they intend to implement the designs for the PBIs that they pick up for the sprint. After many frustrating design calls for which nobody came prepared, it occurred to me that the problem was that there was no effort allocated to the task and they were more concerned with satisfying the delivery requirements than the documentation. So my solution was to add something to which they could allocate some effort / capacity.
 
 ## How it Works
 
